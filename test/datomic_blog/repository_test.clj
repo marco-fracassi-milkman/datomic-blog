@@ -34,18 +34,18 @@
 
 (use-fixtures :each prepare-db)
 
-(deftest retrieve-a-blog-post-key-by-title
+(deftest retrieve-a-blog-post-id-by-title
   (save-blog-post "new blogpost" "content")
 
-  (is (not= (blog-post-key-by-title "new blogpost") nil))
+  (is (not= (blog-post-id-by-title "new blogpost") nil))
 )
 
-(deftest retrieve-all-blog-post-keys-with-a-given-string-in-the-title
+(deftest retrieve-all-blog-post-ids-with-a-given-string-in-the-title
   (save-blog-post "old blogpost" "content")
   (save-blog-post "new blogpost" "content")
   (save-blog-post "other post" "content")
 
-  (let [results (blog-post-keys-by-title-contains "blogpost")]
+  (let [results (blog-post-ids-by-title-contains "blogpost")]
     (is (= (count results) 2))
   )
 )
@@ -56,5 +56,18 @@
   (let [result (blog-post-by-title "new blogpost")]
     (is (= (:post/title result) "new blogpost"))
     (is (= (:post/body result) "content"))
+  )
+)
+
+(deftest update-a-blog-post-content
+  (save-blog-post "title" "old content")
+
+  (let [blog-post-id (blog-post-id-by-title "title")]
+
+    (update-blog-post-body blog-post-id "new content")
+
+    (let [result (blog-post-by-title "title")]
+      (is (= (:post/body result) "new content"))
+    )
   )
 )

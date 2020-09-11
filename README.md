@@ -7,16 +7,16 @@ Use the Datomic in-memory storage.
 Create a schema for the blog posts with title and body.
 
 ### Step 1
-Write a function that can retrieve a blog post key by title. Assume that title is unique.
+Write a function that can retrieve a blog post id by title. Assume that title is unique.
 
 ### Step 2
-Write a function that can retrieve all blog post keys with a given string in the title.
+Write a function that can retrieve all blog post ids with a given string in the title.
 
 ### Step 3
 Write a function that can retrieve a blog post entity by title.
 
 ### Step 4
-Write a function that can update a blog post content.
+Write a function that can update a blog post body.
 
 ### Step 5
 Write a function that can retrieve the history of a blog post.
