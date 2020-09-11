@@ -80,7 +80,6 @@
     (update-blog-post-body blog-post-id "newer content")
 
     (let [results (history-of blog-post-id)]
-      (println results)
       (is (= (map #(second %) results) ["old content" "new content" "newer content"]))
     )
   )
