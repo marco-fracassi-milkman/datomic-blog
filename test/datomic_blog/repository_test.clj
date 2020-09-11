@@ -71,3 +71,17 @@
     )
   )
 )
+
+(deftest retrieve-the-history-of-a-blog-post
+  (save-blog-post "title" "old content")
+
+  (let [blog-post-id (blog-post-id-by-title "title")]
+    (update-blog-post-body blog-post-id "new content")
+    (update-blog-post-body blog-post-id "newer content")
+
+    (let [results (history-of blog-post-id)]
+      (println results)
+      (is (= (map #(second %) results) ["old content" "new content" "newer content"]))
+    )
+  )
+)
