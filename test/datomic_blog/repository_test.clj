@@ -28,18 +28,22 @@
 
 (defn prepare-db [f] (create-db)  (f) (destroy-db))
 
+(defn save-blog-post [title body]
+  (d/transact (connection) [{:post/title title :post/body body}])
+)
+
 (use-fixtures :once prepare-db)
 
 (deftest retrieve-a-blog-post-key-by-title
-  (d/transact (connection) [{:post/title "new blogpost" :post/body "content"}])
+  (save-blog-post "new blogpost" "content")
 
   (is (not= (blog-post-key-by-title "new blogpost") nil))
 )
 
 (deftest retrieve-all-blog-post-keys-with-a-given-string-in-the-title
-  (d/transact (connection) [{:post/title "old blogpost" :post/body "content"}])
-  (d/transact (connection) [{:post/title "new blogpost" :post/body "content"}])
-  (d/transact (connection) [{:post/title "other post" :post/body "content"}])
+  (save-blog-post "old blogpost" "content")
+  (save-blog-post "new blogpost" "content")
+  (save-blog-post "other post" "content")
 
   (let [results (blog-post-keys-by-title-contains "blogpost")]
     (is (= (count results) 2))
