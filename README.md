@@ -7,7 +7,7 @@ Use the Datomic in-memory storage.
 Create a schema for the blog posts with title and body.
 
 __Step 1__
-Write a function that can retrieve a blog post key by title. Assume that title is univoc.
+Write a function that can retrieve a blog post key by title. Assume that title is unique.
 
 __Step 2__
 Write a function that can retrieve all blog post keys with a given string in the title.
