@@ -32,7 +32,7 @@
   (d/transact (connection) [{:post/title title :post/body body}])
 )
 
-(use-fixtures :once prepare-db)
+(use-fixtures :each prepare-db)
 
 (deftest retrieve-a-blog-post-key-by-title
   (save-blog-post "new blogpost" "content")
@@ -47,5 +47,14 @@
 
   (let [results (blog-post-keys-by-title-contains "blogpost")]
     (is (= (count results) 2))
+  )
+)
+
+(deftest retrieve-a-blog-post-entity-by-title
+  (save-blog-post "new blogpost" "content")
+
+  (let [result (blog-post-by-title "new blogpost")]
+    (is (= (:post/title result) "new blogpost"))
+    (is (= (:post/body result) "content"))
   )
 )

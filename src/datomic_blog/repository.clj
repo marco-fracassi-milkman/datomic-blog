@@ -14,6 +14,12 @@
   )
 )
 
+(defn blog-post-by-title [title]
+  (let [key (blog-post-key-by-title title)]
+    (d/entity (d/db (connection)) key)
+  )
+)
+
 (defn blog-post-keys-by-title-contains [title-part]
   (d/q '[:find ?e :in $ ?title-part :where [?e :post/title ?title] [(.contains ^String ?title ?title-part)]] (d/db (connection)) title-part)
 )
