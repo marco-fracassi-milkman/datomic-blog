@@ -3,45 +3,7 @@
             [datomic_blog.repository :refer :all]
             [datomic.api :as d]
   )
-)
-
-(def post-schema [{
-                    :db/ident       :post/title
-                    :db/valueType   :db.type/string
-                    :db/cardinality :db.cardinality/one
-                    }
-                   {
-                    :db/ident       :post/body
-                    :db/valueType   :db.type/string
-                    :db/cardinality :db.cardinality/one
-                    }
-                  {
-                   :db/ident       :post/author
-                   :db/valueType   :db.type/ref
-                   :db/cardinality :db.cardinality/one
-                   }]
-)
-
-(def author-schema [{
-                     :db/ident       :author/name
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one
-                     }
-                    {
-                     :db/ident       :author/age
-                     :db/valueType   :db.type/long
-                     :db/cardinality :db.cardinality/one
-                     }]
-)
-
-(defn create-db []
-  (d/create-database db-uri)
-  (d/transact (connection) author-schema)
-  (d/transact (connection) post-schema)
-)
-
-(defn destroy-db []
-  (d/delete-database db-uri)
+  (:use [datomic-blog.schema])
 )
 
 (defn prepare-db [f] (create-db)  (f) (destroy-db))
@@ -83,7 +45,6 @@
   (save-blog-post "new blogpost" "content" {:name "Bob" :age 50})
 
   (let [result (blog-post-by-title "new blogpost")]
-    (println result)
     (is (= (:post/title result) "new blogpost"))
     (is (= (:post/body result) "content"))
     (is (= (:author/name (:post/author result)) "Bob"))
