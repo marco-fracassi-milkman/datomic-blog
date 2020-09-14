@@ -58,3 +58,16 @@
       )
     )
   )
+
+(deftest retrieve-blog-post-entities-of-authors-older-than-a-given-age
+  (post-builder/save "blogpost1" "content" {:name "Bob" :age 30})
+  (post-builder/save "blogpost2" "content" {:name "Ginger" :age 40})
+  (post-builder/save "blogpost3" "content" {:name "Alex" :age 50})
+
+  (let [results (blog-post-by-author-older-than 30)]
+    (println results)
+    (is (= (count results) 2))
+    (is (= (:author/name (:post/author (first results))) "Ginger"))
+    (is (= (:author/name (:post/author (last results))) "Alex"))
+    )
+  )

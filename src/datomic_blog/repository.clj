@@ -34,6 +34,15 @@
          ] (db) title-part)
 )
 
+(defn blog-post-by-author-older-than [age]
+  (let [ids (d/q '[:find ?e
+         :in $ ?in-age
+         :where [?e :post/author ?author-id] [?author-id :author/age ?age] [(> ?age ?in-age)]
+         ] (db) age)]
+      (map #(d/entity (db) (first %)) ids)
+    )
+  )
+
 (defn update-blog-post-body [id body]
   (d/transact (connection) [{:db/id id :post/body body}])
 )
